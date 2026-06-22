@@ -23,7 +23,9 @@ async function main() {
   console.log(`cleaned ${towns.length} towns, skipped ${skipped.length}`);
 
   // Seed phase only: site_records are all seed rows, so clear before reseeding.
-  await supabase.from("site_records").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+  const { error: clearError } = await supabase
+    .from("site_records").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+  if (clearError) throw clearError;
 
   // Upsert sites by slug (stable ids preserved across re-runs).
   for (const batch of chunk(towns, CHUNK)) {
@@ -43,17 +45,21 @@ async function main() {
   }
 
   // Insert one record per site.
-  const records = towns.map((t) => ({
-    site_id: slugToId.get(t.site.slug),
-    year_settled: t.record.yearSettled,
-    year_abandoned: t.record.yearAbandoned,
-    peak_population: t.record.peakPopulation,
-    commodities: t.record.commodities,
-    mine_size: t.record.mineSize,
-    town_area_acres: t.record.townAreaAcres,
-    notes: t.record.notes,
-    verification_status: t.record.verificationStatus,
-  }));
+  const records = towns.map((t) => {
+    const site_id = slugToId.get(t.site.slug);
+    if (!site_id) throw new Error(`slug not found after upsert: ${t.site.slug}`);
+    return {
+      site_id,
+      year_settled: t.record.yearSettled,
+      year_abandoned: t.record.yearAbandoned,
+      peak_population: t.record.peakPopulation,
+      commodities: t.record.commodities,
+      mine_size: t.record.mineSize,
+      town_area_acres: t.record.townAreaAcres,
+      notes: t.record.notes,
+      verification_status: t.record.verificationStatus,
+    };
+  });
   for (const batch of chunk(records, CHUNK)) {
     const { error } = await supabase.from("site_records").insert(batch);
     if (error) throw error;
