@@ -1,4 +1,8 @@
-import "dotenv/config";
+import { config } from "dotenv";
+// Next.js reads .env.local automatically, but this standalone script does not —
+// load .env.local first, then .env as a fallback (neither overrides real env vars).
+config({ path: ".env.local" });
+config();
 import { readFileSync } from "node:fs";
 import { createClient } from "@supabase/supabase-js";
 import { cleanCsv } from "./clean";
