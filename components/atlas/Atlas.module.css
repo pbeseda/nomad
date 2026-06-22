@@ -1,0 +1,8 @@
+.root { position: fixed; inset: 0; }
+.map { position: absolute; inset: 0; }
+.map :global(.maplibregl-ctrl-attrib) { font-size: 9px; opacity: .5; }
+.overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  box-shadow: inset 0 0 160px rgba(0,0,0,.6);
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px);
+}
