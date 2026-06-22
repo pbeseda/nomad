@@ -1,10 +1,6 @@
 import type { SiteCurrent } from "../../lib/types";
 import styles from "./SiteDetailPanel.module.css";
 
-function fmtInt(n: number | null): string {
-  return n === null ? "" : n.toLocaleString("en-US");
-}
-
 const UNRECORDED = "— unrecorded";
 
 export function SiteDetailPanel({
@@ -25,7 +21,7 @@ export function SiteDetailPanel({
   return (
     <aside className={styles.panel}>
       <button className={styles.close} onClick={onClose} aria-label="Close">×</button>
-      <div className={styles.tag}>Site · {r?.verificationStatus ?? "unrecorded"}</div>
+      <div className={styles.tag}>Site · {r?.verificationStatus ?? "presumed"}</div>
       <h2 className={styles.name}>{site.name}</h2>
       <div className={styles.coord}>
         {site.state} · {lat}°N {lon}°W
