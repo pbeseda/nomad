@@ -8,7 +8,7 @@
 .tag { font: 600 9.5px/1 ui-monospace, Menlo, monospace; letter-spacing: .22em;
   color: #a9744a; text-transform: uppercase; }
 .name { font-size: 23px; font-weight: 600; color: #f4ead6; margin: 8px 0 3px; }
-.coord { font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .06em; color: #7e8682; }
+.coord { font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .06em; color: #7e8682; text-transform: uppercase; }
 .divider { height: 1px; background: #241d14; margin: 14px 0; }
 .row { display: flex; justify-content: space-between; font-size: 12.5px; padding: 7px 0;
   border-bottom: 1px solid #181d20; }

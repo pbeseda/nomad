@@ -15,9 +15,9 @@ export function SiteDetailPanel({
   const lon = site.longitude.toFixed(2);
 
   const rows: { label: string; value: string; warm?: boolean; unknown?: boolean }[] = [
-    { label: "Settled", value: r?.yearSettled != null ? String(r.yearSettled) : UNRECORDED, unknown: !r?.yearSettled },
-    { label: "Abandoned", value: r?.yearAbandoned != null ? String(r.yearAbandoned) : UNRECORDED, warm: !!r?.yearAbandoned, unknown: !r?.yearAbandoned },
-    { label: "Peak pop.", value: fmtInt(r?.peakPopulation ?? null) || UNRECORDED, unknown: !r?.peakPopulation },
+    { label: "Settled", value: r?.yearSettled != null ? String(r.yearSettled) : UNRECORDED, unknown: r?.yearSettled == null },
+    { label: "Abandoned", value: r?.yearAbandoned != null ? String(r.yearAbandoned) : UNRECORDED, warm: r?.yearAbandoned != null, unknown: r?.yearAbandoned == null },
+    { label: "Peak pop.", value: r?.peakPopulation != null ? r.peakPopulation.toLocaleString("en-US") : UNRECORDED, unknown: r?.peakPopulation == null },
     { label: "Commodity", value: r && r.commodities.length ? r.commodities.join(", ") : UNRECORDED, unknown: !r || r.commodities.length === 0 },
     { label: "Town area", value: r?.townAreaAcres != null ? `${r.townAreaAcres} ac` : UNRECORDED, unknown: r?.townAreaAcres == null },
   ];
@@ -25,7 +25,7 @@ export function SiteDetailPanel({
   return (
     <aside className={styles.panel}>
       <button className={styles.close} onClick={onClose} aria-label="Close">×</button>
-      <div className={styles.tag}>Ghost Town · {site.region.replace(/_/g, " ")}</div>
+      <div className={styles.tag}>Site · {r?.verificationStatus ?? "unrecorded"}</div>
       <h2 className={styles.name}>{site.name}</h2>
       <div className={styles.coord}>
         {site.state} · {lat}°N {lon}°W

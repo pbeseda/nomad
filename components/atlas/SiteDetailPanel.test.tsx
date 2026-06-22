@@ -29,7 +29,7 @@ describe("SiteDetailPanel", () => {
 
   it("shows the presumed/unverified status badge", () => {
     render(<SiteDetailPanel site={bannack} onClose={() => {}} />);
-    expect(screen.getByText(/presumed/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/presumed/i).length).toBeGreaterThanOrEqual(1);
   });
 
   it("calls onClose when the close control is clicked", () => {
