@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOMAD — Atlas (final base)</title>
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#06080a; color:#cdd4d2; font-family:"Inter","Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; padding:22px; }
+  .framelabel{ max-width:1240px; margin:0 auto 14px; display:flex; justify-content:space-between; align-items:baseline; }
+  .framelabel .k{ font:600 11px/1 ui-monospace,Menlo,monospace; letter-spacing:.3em; color:#6b6f6c; text-transform:uppercase; }
+  .framelabel .h{ font-size:13px; color:#7f8783; }
+
+  .atlas{ position:relative; max-width:1240px; height:600px; margin:0 auto; border:1px solid #1c2226; border-radius:12px; overflow:hidden;
+    background:radial-gradient(130% 100% at 72% 8%, #141a1e 0%, #0a0e10 60%, #070a0c 100%); box-shadow:0 30px 80px rgba(0,0,0,.6); }
+  .scan{ position:absolute; inset:0; z-index:2; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(0,0,0,.13) 0 1px, transparent 1px 3px); opacity:.45; }
+  .vign{ position:absolute; inset:0; z-index:3; pointer-events:none; box-shadow:inset 0 0 160px rgba(0,0,0,.6); }
+
+  .topbar{ position:absolute; top:0; left:0; right:0; z-index:6; height:46px; display:flex; align-items:center; gap:18px; padding:0 18px;
+    background:linear-gradient(180deg, rgba(7,10,12,.85), rgba(7,10,12,0)); }
+  .wordmark{ font-weight:700; letter-spacing:.34em; font-size:14px; color:#f0e6d2; }
+  .wordmark b{ color:#f0a83c; font-weight:700; }
+  .coord{ font:600 11px/1 ui-monospace,Menlo,monospace; letter-spacing:.12em; color:#7e8682; margin-left:auto; }
+  .count{ font:600 11px/1 ui-monospace,Menlo,monospace; letter-spacing:.12em; color:#a9744a; }
+
+  .panel{ position:absolute; right:18px; top:64px; z-index:7; width:266px; padding:18px 18px 20px;
+    background:rgba(11,14,16,.78); backdrop-filter:blur(7px); border:1px solid #3a2c1c; border-radius:10px; box-shadow:0 16px 40px rgba(0,0,0,.5); }
+  .panel .tag{ font:600 9.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.22em; color:#a9744a; text-transform:uppercase; }
+  .panel h2{ font-size:23px; font-weight:600; color:#f4ead6; letter-spacing:.005em; margin:8px 0 3px; }
+  .panel .ll{ font:600 11px/1 ui-monospace,Menlo,monospace; letter-spacing:.06em; color:#7e8682; }
+  .panel .row{ display:flex; justify-content:space-between; font-size:12.5px; padding:7px 0; border-bottom:1px solid #181d20; }
+  .panel .row .lab{ color:#737976; font:600 10px/1.2 ui-monospace,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; align-self:center; }
+  .panel .row .val{ color:#dfd6c4; font-weight:500; }
+  .panel .row .val.warm{ color:#f0a83c; }
+  .panel .unk{ color:#5b615e; font-size:11px; }
+  .panel .status{ margin-top:14px; display:inline-block; font:600 9.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.14em; color:#b98a3a; border:1px solid #4a3a1f; border-radius:4px; padding:5px 8px; text-transform:uppercase; }
+  .divider{ height:1px; background:#241d14; margin:14px 0; }
+
+  .legend{ position:absolute; left:18px; bottom:18px; z-index:6; font:600 10px/1.85 ui-monospace,Menlo,monospace; letter-spacing:.08em; color:#7e8682; }
+  .legend .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:8px; vertical-align:middle; }
+
+  .choices{ max-width:1240px; margin:20px auto 0; display:flex; gap:12px; }
+  .opt{ flex:1; border:1px solid #20262a; border-radius:9px; padding:13px 15px; cursor:pointer; background:#0c1012; transition:border-color .16s, transform .16s; }
+  .opt:hover{ transform:translateY(-2px); }
+  .opt.selected{ border-color:#f0a83c; box-shadow:0 0 0 1px #f0a83c; }
+  .opt .t{ font-size:13px; font-weight:600; color:#e7ddca; margin-bottom:4px; }
+  .opt .t .id{ font:600 10px/1 ui-monospace,Menlo,monospace; color:#6b6f6c; letter-spacing:.18em; margin-left:6px; }
+  .opt .d{ font-size:11.5px; color:#83897f; line-height:1.45; }
+</style>
+</head>
+<body>
+  <div class="framelabel">
+    <span class="k">NOMAD · Atlas · Base locked — "Dust &amp; Ember"</span>
+    <span class="h">teal dormant · ember selected · halo, minimal crosshair · trail color reserved</span>
+  </div>
+
+  <div class="atlas">
+    <svg width="100%" height="100%" viewBox="0 0 1240 600" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;z-index:1;">
+      <defs>
+        <radialGradient id="ember" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffb13e" stop-opacity="1"/><stop offset="48%" stop-color="#f0a83c" stop-opacity=".30"/><stop offset="100%" stop-color="#f0a83c" stop-opacity="0"/></radialGradient>
+      </defs>
+
+      <!-- warm rust landmasses -->
+      <g opacity=".7">
+        <path d="M120,360 C200,250 420,210 600,260 C780,310 980,280 1120,360 C1040,470 760,520 520,470 C300,425 90,470 120,360Z" fill="#241712"/>
+        <path d="M760,120 C880,80 1020,100 1120,150 C1180,210 1160,300 1060,310 C940,300 820,250 780,200 C760,170 740,140 760,120Z" fill="#201510"/>
+      </g>
+      <g stroke="#6a4126" stroke-width="1.1" fill="none" opacity=".9">
+        <path d="M200,360 C280,280 440,250 600,290 C760,330 940,310 1050,365 C960,450 740,485 540,448 C340,411 150,440 200,360Z"/>
+        <path d="M280,360 C345,300 470,278 600,310 C730,342 880,328 968,366 C896,432 720,460 560,430 C400,400 230,420 280,360Z" opacity=".75"/>
+        <path d="M360,360 C410,316 510,300 600,324 C690,348 808,338 878,368 C820,420 690,440 568,416 C446,392 320,406 360,360Z" opacity=".6"/>
+        <path d="M790,170 C870,135 990,150 1070,190 C1120,235 1100,285 1020,290 C930,282 840,245 808,210 C792,194 780,182 790,170Z" opacity=".7"/>
+        <path d="M830,180 C895,155 985,168 1042,200 C1080,234 1064,270 1000,274 C928,268 858,238 836,212 C824,200 822,190 830,180Z" opacity=".5"/>
+      </g>
+      <g stroke="#12181b" stroke-width=".7">
+        <line x1="0" y1="150" x2="1240" y2="150"/><line x1="0" y1="300" x2="1240" y2="300"/><line x1="0" y1="450" x2="1240" y2="450"/>
+        <line x1="207" y1="0" x2="207" y2="600"/><line x1="414" y1="0" x2="414" y2="600"/><line x1="620" y1="0" x2="620" y2="600"/><line x1="827" y1="0" x2="827" y2="600"/><line x1="1033" y1="0" x2="1033" y2="600"/>
+      </g>
+
+      <!-- dormant sites: TEAL, small, quiet -->
+      <g fill="#3f9e90" opacity=".82">
+        <circle cx="300" cy="330" r="2.4"/><circle cx="470" cy="420" r="2.4"/><circle cx="900" cy="400" r="2.4"/>
+        <circle cx="1010" cy="230" r="2.4"/><circle cx="560" cy="450" r="2.4"/><circle cx="380" cy="400" r="2.4"/>
+        <circle cx="820" cy="320" r="2.4"/><circle cx="240" cy="410" r="2.4"/><circle cx="660" cy="430" r="2.4"/><circle cx="990" cy="430" r="2.4"/>
+      </g>
+
+      <!-- SELECTED: ember halo + ring + dot, crosshair barely there -->
+      <circle cx="700" cy="250" r="52" fill="url(#ember)" opacity=".62"/>
+      <circle cx="700" cy="250" r="10" fill="none" stroke="#ffb13e" stroke-width="1.8"/>
+      <circle cx="700" cy="250" r="3.4" fill="#fff0cf"/>
+      <!-- minimal crosshair: tiny ticks only -->
+      <line x1="700" y1="234" x2="700" y2="238" stroke="#ffb13e" stroke-width="1" opacity=".7"/>
+      <line x1="700" y1="262" x2="700" y2="266" stroke="#ffb13e" stroke-width="1" opacity=".7"/>
+      <line x1="684" y1="250" x2="688" y2="250" stroke="#ffb13e" stroke-width="1" opacity=".7"/>
+      <line x1="712" y1="250" x2="716" y2="250" stroke="#ffb13e" stroke-width="1" opacity=".7"/>
+    </svg>
+
+    <div class="scan"></div>
+    <div class="vign"></div>
+
+    <div class="topbar">
+      <span class="wordmark">N<b>O</b>MAD</span>
+      <span class="count">1,439 SITES · WEST</span>
+      <span class="coord">45.16°N 112.99°W · z6</span>
+    </div>
+
+    <div class="legend">
+      <div><span class="dot" style="background:#3f9e90;"></span>SITE · DORMANT</div>
+      <div><span class="dot" style="background:#ffb13e;box-shadow:0 0 8px #ffb13e;"></span>SITE · SELECTED</div>
+    </div>
+
+    <div class="panel">
+      <div class="tag">Site · presumed</div>
+      <h2>Bannack</h2>
+      <div class="ll">MONTANA · 45.16°N 112.99°W</div>
+      <div class="divider"></div>
+      <div class="row"><span class="lab">Settled</span><span class="val">1862</span></div>
+      <div class="row"><span class="lab">Abandoned</span><span class="val warm">1970</span></div>
+      <div class="row"><span class="lab">Peak pop.</span><span class="val">10,000</span></div>
+      <div class="row"><span class="lab">Commodity</span><span class="val">Gold</span></div>
+      <div class="row"><span class="lab">Town area</span><span class="val unk">— unrecorded</span></div>
+      <span class="status">◷ Presumed · unverified</span>
+    </div>
+  </div>
+
+  <div class="choices">
+    <div class="opt" data-choice="locked" onclick="toggleSelect(this)">
+      <div class="t">This is the base — lock it<span class="id">A</span></div>
+      <div class="d">Carry "Dust &amp; Ember" into the real build. We move on to the data + architecture design.</div>
+    </div>
+    <div class="opt" data-choice="tweak-crosshair" onclick="toggleSelect(this)">
+      <div class="t">Crosshair: still tweaking<span class="id">B</span></div>
+      <div class="d">Tell me — gone entirely? a ring pulse instead? slightly more?</div>
+    </div>
+    <div class="opt" data-choice="tweak-teal" onclick="toggleSelect(this)">
+      <div class="t">Dormant teal: adjust<span class="id">C</span></div>
+      <div class="d">Brighter / dimmer / more saturated — say the word.</div>
+    </div>
+  </div>
+</body>
+</html>

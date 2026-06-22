@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOMAD — Regions</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#06080a;color:#cdd4d2;font-family:"Inter",Arial,sans-serif;-webkit-font-smoothing:antialiased;padding:30px 26px 70px;}
+  .wrap{max-width:1080px;margin:0 auto;}
+  .k{font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.3em;color:#6b6f6c;text-transform:uppercase;}
+  h1{font-size:23px;font-weight:600;color:#e7e3d8;margin:12px 0 6px;letter-spacing:-.01em;}
+  .sub{font-size:13.5px;color:#8b867a;line-height:1.55;max-width:760px;}
+  .grid{display:grid;grid-template-columns:repeat(11,1fr);gap:6px;margin:28px 0 22px;}
+  .t{aspect-ratio:1/1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+     font:600 12px/1 ui-monospace,Menlo,monospace;color:#0a0a0a;letter-spacing:.02em;}
+  .t small{font-size:8px;opacity:.6;margin-top:3px;font-weight:600;}
+  .pac{background:#4a8fb0;} .mtn{background:#b0703a;} .sw{background:#d39a4a;} .gp{background:#8f9a5b;}
+  .oth{background:#1c2226;color:#4a5054;}
+  .swing{box-shadow:0 0 0 2px #f0a83c, 0 0 14px rgba(240,168,60,.5);}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin:8px 0 26px;font-size:12.5px;color:#9a958a;}
+  .legend span{display:inline-flex;align-items:center;gap:8px;}
+  .chip{width:14px;height:14px;border-radius:4px;display:inline-block;}
+  .note{font-size:12.5px;color:#83897f;line-height:1.55;max-width:780px;margin-bottom:22px;}
+  .note b{color:#f0a83c;}
+  .choices{display:flex;gap:12px;flex-wrap:wrap;}
+  .opt{flex:1;min-width:220px;border:1px solid #20262a;border-radius:9px;padding:13px 15px;cursor:pointer;background:#0c1012;transition:border-color .16s,transform .16s;}
+  .opt:hover{transform:translateY(-2px);}
+  .opt.selected{border-color:#f0a83c;box-shadow:0 0 0 1px #f0a83c;}
+  .opt .tt{font-size:13px;font-weight:600;color:#e7ddca;margin-bottom:4px;}
+  .opt .tt .id{font:600 10px/1 ui-monospace,Menlo,monospace;color:#6b6f6c;letter-spacing:.18em;margin-left:6px;}
+  .opt .d{font-size:11.5px;color:#83897f;line-height:1.45;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="k">NOMAD · Regions · tag every site, atlas surfaces the West</span>
+  <h1>Four western regions + the rest held latent</h1>
+  <p class="sub">A tile per state, placed roughly geographically. The four colored regions are Nomad's focus; everything dim is <i>loaded but not surfaced yet</i>. <b style="color:#f0a83c">Texas &amp; Oklahoma are highlighted</b> — they're the swing states. Shown here in <b style="color:#f0a83c">Southwest</b>, per your instinct.</p>
+
+  <div class="grid">
+    <!-- row 0 -->
+    <div class="t oth" style="grid-area:1/1;">AK</div>
+    <div class="t oth" style="grid-area:1/10;">NH</div>
+    <div class="t oth" style="grid-area:1/11;">ME</div>
+    <!-- row 1 -->
+    <div class="t pac" style="grid-area:2/1;">WA</div>
+    <div class="t mtn" style="grid-area:2/2;">ID</div>
+    <div class="t mtn" style="grid-area:2/3;">MT</div>
+    <div class="t gp"  style="grid-area:2/4;">ND</div>
+    <div class="t oth" style="grid-area:2/5;">MN</div>
+    <div class="t oth" style="grid-area:2/6;">WI</div>
+    <div class="t oth" style="grid-area:2/8;">MI</div>
+    <div class="t oth" style="grid-area:2/10;">NY</div>
+    <div class="t oth" style="grid-area:2/11;">VT</div>
+    <!-- row 2 -->
+    <div class="t pac" style="grid-area:3/1;">OR</div>
+    <div class="t mtn" style="grid-area:3/2;">NV</div>
+    <div class="t mtn" style="grid-area:3/3;">WY</div>
+    <div class="t gp"  style="grid-area:3/4;">SD</div>
+    <div class="t oth" style="grid-area:3/5;">IA</div>
+    <div class="t oth" style="grid-area:3/6;">IL</div>
+    <div class="t oth" style="grid-area:3/7;">IN</div>
+    <div class="t oth" style="grid-area:3/8;">OH</div>
+    <div class="t oth" style="grid-area:3/9;">PA</div>
+    <div class="t oth" style="grid-area:3/10;">NJ</div>
+    <div class="t oth" style="grid-area:3/11;">CT</div>
+    <!-- row 3 -->
+    <div class="t pac" style="grid-area:4/1;">CA</div>
+    <div class="t mtn" style="grid-area:4/2;">UT</div>
+    <div class="t mtn" style="grid-area:4/3;">CO</div>
+    <div class="t gp"  style="grid-area:4/4;">NE</div>
+    <div class="t oth" style="grid-area:4/5;">MO</div>
+    <div class="t oth" style="grid-area:4/6;">KY</div>
+    <div class="t oth" style="grid-area:4/7;">WV</div>
+    <div class="t oth" style="grid-area:4/8;">VA</div>
+    <div class="t oth" style="grid-area:4/9;">MD</div>
+    <div class="t oth" style="grid-area:4/10;">DE</div>
+    <div class="t oth" style="grid-area:4/11;">MA</div>
+    <!-- row 4 -->
+    <div class="t sw"  style="grid-area:5/2;">AZ</div>
+    <div class="t sw"  style="grid-area:5/3;">NM</div>
+    <div class="t gp"  style="grid-area:5/4;">KS</div>
+    <div class="t oth" style="grid-area:5/5;">AR</div>
+    <div class="t oth" style="grid-area:5/6;">TN</div>
+    <div class="t oth" style="grid-area:5/7;">NC</div>
+    <div class="t oth" style="grid-area:5/8;">SC</div>
+    <div class="t oth" style="grid-area:5/9;">DC</div>
+    <div class="t oth" style="grid-area:5/11;">RI</div>
+    <!-- row 5 -->
+    <div class="t oth" style="grid-area:6/1;">HI</div>
+    <div class="t sw swing" style="grid-area:6/3;">OK<small>swing</small></div>
+    <div class="t oth" style="grid-area:6/5;">LA</div>
+    <div class="t oth" style="grid-area:6/6;">MS</div>
+    <div class="t oth" style="grid-area:6/7;">AL</div>
+    <div class="t oth" style="grid-area:6/8;">GA</div>
+    <!-- row 6 -->
+    <div class="t sw swing" style="grid-area:7/3;">TX<small>swing</small></div>
+    <div class="t oth" style="grid-area:7/8;">FL</div>
+  </div>
+
+  <div class="legend">
+    <span><i class="chip pac"></i>Pacific — CA OR WA</span>
+    <span><i class="chip mtn"></i>Mountain West — ID MT WY NV UT CO</span>
+    <span><i class="chip sw"></i>Southwest — AZ NM <b style="color:#f0a83c">+TX +OK</b></span>
+    <span><i class="chip gp"></i>Great Plains — ND SD NE KS</span>
+    <span><i class="chip oth"></i>Latent (not surfaced)</span>
+  </div>
+
+  <p class="note">The atlas opens showing all four western regions. "Latent" states stay in the database, revealed when the investigation widens. <b>AK &amp; HI</b> sit in latent for now (Alaska's gold-rush towns could join Pacific later — easy change). The only real decision: where do <b>TX</b> &amp; <b>OK</b> belong?</p>
+
+  <div class="choices">
+    <div class="opt" data-choice="sw-tx-ok" onclick="toggleSelect(this)">
+      <div class="tt">TX + OK in Southwest<span class="id">A</span></div>
+      <div class="d">As shown — your instinct. Desert/border character; Southwest = AZ NM TX OK.</div>
+    </div>
+    <div class="opt" data-choice="gp-tx-ok" onclick="toggleSelect(this)">
+      <div class="tt">TX + OK in Great Plains<span class="id">B</span></div>
+      <div class="d">Most of both states are plains. Southwest = AZ NM only; Plains = ND SD NE KS TX OK.</div>
+    </div>
+    <div class="opt" data-choice="ok-gp-tx-sw" onclick="toggleSelect(this)">
+      <div class="tt">OK → Plains, TX → Southwest<span class="id">C</span></div>
+      <div class="d">Split them: Oklahoma reads Plains, Texas keeps its desert/border identity.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

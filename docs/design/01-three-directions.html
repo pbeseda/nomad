@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOMAD — Atlas Mood</title>
+<style>
+  :root{ --ui:#c9c4b8; }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:#0c0d10; color:var(--ui);
+    font-family:"Inter","Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; padding:34px 30px 80px;
+  }
+  .head{ max-width:1180px; margin:0 auto 26px; }
+  .kicker{ font:600 11px/1 "SFMono-Regular",ui-monospace,Menlo,monospace; letter-spacing:.32em; color:#6f6a5e; text-transform:uppercase; }
+  h1{ font-size:24px; font-weight:600; margin:12px 0 6px; letter-spacing:-.01em; color:#e7e3d8;}
+  .sub{ font-size:14px; color:#8b867a; max-width:760px; line-height:1.5; }
+  .grid{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media(max-width:1080px){ .grid{ grid-template-columns:1fr; } }
+
+  .card{ border:1px solid #23242a; border-radius:10px; overflow:hidden; cursor:pointer;
+    background:#101115; transition:border-color .18s, transform .18s; }
+  .card:hover{ transform:translateY(-3px); }
+  .card.selected{ border-color:#d8a24b; box-shadow:0 0 0 1px #d8a24b, 0 14px 40px rgba(0,0,0,.5); }
+
+  .map{ position:relative; height:300px; overflow:hidden; }
+  .maplabel{ position:absolute; left:12px; top:11px; z-index:5; font:600 10px/1 ui-monospace,Menlo,monospace; letter-spacing:.22em; }
+  .scan{ position:absolute; inset:0; z-index:4; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px); opacity:.5; }
+  .panel{ position:absolute; right:12px; bottom:12px; z-index:6; width:148px; padding:11px 12px;
+    border-radius:7px; font-size:10.5px; line-height:1.5; backdrop-filter:blur(3px); }
+  .panel .nm{ font-weight:700; font-size:12px; letter-spacing:.02em; margin-bottom:3px; }
+  .panel .mono{ font-family:ui-monospace,Menlo,monospace; font-size:9.5px; letter-spacing:.04em; opacity:.85; }
+  .panel hr{ border:0; height:1px; margin:7px 0; }
+
+  .meta{ padding:15px 16px 17px; border-top:1px solid #1e1f25; }
+  .mname{ display:flex; align-items:baseline; gap:9px; }
+  .mname h3{ margin:0; font-size:15px; font-weight:600; color:#e7e3d8; letter-spacing:.01em; }
+  .mname .id{ font:600 10px/1 ui-monospace,Menlo,monospace; color:#6f6a5e; letter-spacing:.18em; }
+  .desc{ font-size:12.5px; color:#8f8a7d; line-height:1.5; margin:9px 0 13px; }
+  .sw{ display:flex; gap:6px; margin-bottom:10px; }
+  .sw span{ width:24px; height:24px; border-radius:5px; border:1px solid rgba(255,255,255,.07); }
+  .type{ font-size:11px; color:#736e62; }
+  .type b{ color:#a39d8e; font-weight:600; }
+  .pick{ font:600 10px/1 ui-monospace,Menlo,monospace; letter-spacing:.2em; color:#5c5852; text-transform:uppercase; margin-top:12px; }
+  .card.selected .pick{ color:#d8a24b; }
+  .foot{ max-width:1180px; margin:30px auto 0; font-size:12.5px; color:#736f63; line-height:1.6; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="kicker">NOMAD · Atlas · Cartographic Mood</div>
+    <h1>Three directions for the map's feel</h1>
+    <p class="sub">Same fictional view in each — desert basin, contour terrain, a few sites, one selected (Bannack). All three aim at <b style="color:#a39d8e">cyberpunk-but-western, contemporary, timeless</b>. They differ in <i>where</i> that tension lives: warmth vs. cold signal vs. inverted light. Click the one closest to what you see. We'll refine from there.</p>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- ============ A: PHOSPHOR SURVEY ============ -->
+    <div class="card" data-choice="phosphor" onclick="toggleSelect(this)">
+      <div class="map" style="background:radial-gradient(120% 90% at 30% 0%, #14130f 0%, #0a0a0b 70%);">
+        <div class="maplabel" style="color:#d8a24b;">39.7°N · 112.9°W</div>
+        <div class="scan"></div>
+        <svg width="100%" height="100%" viewBox="0 0 360 300" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="aGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d8a24b" stop-opacity=".9"/><stop offset="100%" stop-color="#d8a24b" stop-opacity="0"/></radialGradient>
+          </defs>
+          <g stroke="#3a3220" stroke-width="1" fill="none" opacity=".8">
+            <path d="M40,150 C70,90 150,70 210,100 C270,130 320,120 340,170 C320,230 240,250 170,230 C100,210 40,210 40,150Z"/>
+            <path d="M70,152 C95,108 158,92 208,116 C258,140 296,134 312,172 C296,216 232,232 174,216 C116,200 72,200 70,152Z" opacity=".7"/>
+            <path d="M100,154 C120,124 166,112 206,132 C246,152 274,148 286,174 C274,204 224,216 178,204 C132,192 102,196 100,154Z" opacity=".55"/>
+            <path d="M132,158 C146,138 176,130 204,146 C232,162 252,160 260,176 C252,196 220,204 188,196 C156,188 134,188 132,158Z" opacity=".4"/>
+          </g>
+          <g stroke="#1c1d22" stroke-width=".5">
+            <line x1="0" y1="75" x2="360" y2="75"/><line x1="0" y1="150" x2="360" y2="150"/><line x1="0" y1="225" x2="360" y2="225"/>
+            <line x1="90" y1="0" x2="90" y2="300"/><line x1="180" y1="0" x2="180" y2="300"/><line x1="270" y1="0" x2="270" y2="300"/>
+          </g>
+          <!-- sites -->
+          <g fill="#8a8170"><circle cx="95" cy="120" r="2.2"/><circle cx="250" cy="200" r="2.2"/><circle cx="300" cy="110" r="2.2"/><circle cx="140" cy="215" r="2.2"/></g>
+          <!-- selected site -->
+          <circle cx="190" cy="150" r="26" fill="url(#aGlow)" opacity=".5"/>
+          <circle cx="190" cy="150" r="7" fill="none" stroke="#d8a24b" stroke-width="1.4"/>
+          <circle cx="190" cy="150" r="2.4" fill="#f2c879"/>
+          <line x1="190" y1="135" x2="190" y2="143" stroke="#d8a24b" stroke-width="1"/><line x1="190" y1="157" x2="190" y2="165" stroke="#d8a24b" stroke-width="1"/>
+          <line x1="175" y1="150" x2="183" y2="150" stroke="#d8a24b" stroke-width="1"/><line x1="197" y1="150" x2="205" y2="150" stroke="#d8a24b" stroke-width="1"/>
+        </svg>
+        <div class="panel" style="background:rgba(16,14,9,.82); border:1px solid #3a3220; color:#d8cfb8;">
+          <div class="nm" style="color:#f2c879;">BANNACK</div>
+          <div class="mono">MT · 45.16°N 112.99°W</div>
+          <hr style="background:#3a3220;">
+          <div class="mono">EST 1862 · GOLD<br>PEAK 10,000<br><span style="color:#7a7363;">END 1970 · presumed</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="mname"><h3>Phosphor Survey</h3><span class="id">A</span></div>
+        <p class="desc">Warm cyberpunk. Deep ink ground, copper-amber signal — the glow of a CRT and of ore. Western through heat and dust; technical through the crosshair markers and survey grid.</p>
+        <div class="sw"><span style="background:#0a0a0b;"></span><span style="background:#14130f;"></span><span style="background:#3a3220;"></span><span style="background:#d8a24b;"></span><span style="background:#f2c879;"></span></div>
+        <div class="type"><b>Inter</b> + <b>mono</b> data labels · amber accent</div>
+        <div class="pick">Click to choose A</div>
+      </div>
+    </div>
+
+    <!-- ============ B: DUST SIGNAL ============ -->
+    <div class="card" data-choice="signal" onclick="toggleSelect(this)">
+      <div class="map" style="background:radial-gradient(120% 90% at 70% 10%, #161a1d 0%, #0d1012 72%);">
+        <div class="maplabel" style="color:#3fe0c4;">39.7°N · 112.9°W</div>
+        <div class="scan"></div>
+        <svg width="100%" height="100%" viewBox="0 0 360 300" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3fe0c4" stop-opacity=".85"/><stop offset="100%" stop-color="#3fe0c4" stop-opacity="0"/></radialGradient>
+          </defs>
+          <!-- warm rust land -->
+          <g fill="none">
+            <path d="M40,150 C70,90 150,70 210,100 C270,130 320,120 340,170 C320,230 240,250 170,230 C100,210 40,210 40,150Z" fill="#221712" opacity=".75"/>
+          </g>
+          <g stroke="#5a3a2a" stroke-width="1" fill="none" opacity=".85">
+            <path d="M70,152 C95,108 158,92 208,116 C258,140 296,134 312,172 C296,216 232,232 174,216 C116,200 72,200 70,152Z"/>
+            <path d="M100,154 C120,124 166,112 206,132 C246,152 274,148 286,174 C274,204 224,216 178,204 C132,192 102,196 100,154Z" opacity=".7"/>
+            <path d="M132,158 C146,138 176,130 204,146 C232,162 252,160 260,176 C252,196 220,204 188,196 C156,188 134,188 132,158Z" opacity=".5"/>
+          </g>
+          <g stroke="#1a2326" stroke-width=".5">
+            <line x1="0" y1="75" x2="360" y2="75"/><line x1="0" y1="150" x2="360" y2="150"/><line x1="0" y1="225" x2="360" y2="225"/>
+            <line x1="90" y1="0" x2="90" y2="300"/><line x1="180" y1="0" x2="180" y2="300"/><line x1="270" y1="0" x2="270" y2="300"/>
+          </g>
+          <g fill="#7c5a3a"><circle cx="95" cy="120" r="2.2"/><circle cx="250" cy="200" r="2.2"/><circle cx="300" cy="110" r="2.2"/><circle cx="140" cy="215" r="2.2"/></g>
+          <circle cx="190" cy="150" r="28" fill="url(#bGlow)" opacity=".45"/>
+          <circle cx="190" cy="150" r="6.5" fill="none" stroke="#3fe0c4" stroke-width="1.5"/>
+          <circle cx="190" cy="150" r="2.4" fill="#9af5e4"/>
+        </svg>
+        <div class="panel" style="background:rgba(13,18,20,.82); border:1px solid #234; color:#cfe6e0;">
+          <div class="nm" style="color:#9af5e4;">BANNACK</div>
+          <div class="mono">MT · 45.16°N 112.99°W</div>
+          <hr style="background:#1f3a36;">
+          <div class="mono">EST 1862 · GOLD<br>PEAK 10,000<br><span style="color:#5e7771;">END 1970 · presumed</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="mname"><h3>Dust &amp; Signal</h3><span class="id">B</span></div>
+        <p class="desc">Cold signal over warm land. Rust-red desert terrain, slate night, a single electric teal that reads as transmission and presence. Sites glow like beacons on dead ground.</p>
+        <div class="sw"><span style="background:#0d1012;"></span><span style="background:#221712;"></span><span style="background:#5a3a2a;"></span><span style="background:#3fe0c4;"></span><span style="background:#9af5e4;"></span></div>
+        <div class="type"><b>Inter</b> + <b>mono</b> data labels · teal signal</div>
+        <div class="pick">Click to choose B</div>
+      </div>
+    </div>
+
+    <!-- ============ C: BONE SURVEY (INVERTED) ============ -->
+    <div class="card" data-choice="bone" onclick="toggleSelect(this)">
+      <div class="map" style="background:#e7e1d2;">
+        <div class="maplabel" style="color:#9a3b22;">39.7°N · 112.9°W</div>
+        <svg width="100%" height="100%" viewBox="0 0 360 300" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="cGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d8451f" stop-opacity=".5"/><stop offset="100%" stop-color="#d8451f" stop-opacity="0"/></radialGradient>
+          </defs>
+          <g stroke="#b9b09a" stroke-width="1" fill="none">
+            <path d="M40,150 C70,90 150,70 210,100 C270,130 320,120 340,170 C320,230 240,250 170,230 C100,210 40,210 40,150Z"/>
+            <path d="M70,152 C95,108 158,92 208,116 C258,140 296,134 312,172 C296,216 232,232 174,216 C116,200 72,200 70,152Z"/>
+            <path d="M100,154 C120,124 166,112 206,132 C246,152 274,148 286,174 C274,204 224,216 178,204 C132,192 102,196 100,154Z"/>
+            <path d="M132,158 C146,138 176,130 204,146 C232,162 252,160 260,176 C252,196 220,204 188,196 C156,188 134,188 132,158Z"/>
+          </g>
+          <g stroke="#cfc7b3" stroke-width=".6">
+            <line x1="0" y1="75" x2="360" y2="75"/><line x1="0" y1="150" x2="360" y2="150"/><line x1="0" y1="225" x2="360" y2="225"/>
+            <line x1="90" y1="0" x2="90" y2="300"/><line x1="180" y1="0" x2="180" y2="300"/><line x1="270" y1="0" x2="270" y2="300"/>
+          </g>
+          <g fill="#8c8470"><circle cx="95" cy="120" r="2"/><circle cx="250" cy="200" r="2"/><circle cx="300" cy="110" r="2"/><circle cx="140" cy="215" r="2"/></g>
+          <circle cx="190" cy="150" r="24" fill="url(#cGlow)"/>
+          <circle cx="190" cy="150" r="6.5" fill="none" stroke="#d8451f" stroke-width="1.6"/>
+          <circle cx="190" cy="150" r="2.3" fill="#d8451f"/>
+        </svg>
+        <div class="panel" style="background:rgba(247,244,236,.9); border:1px solid #cfc7b3; color:#2c2a24;">
+          <div class="nm" style="color:#9a3b22;">BANNACK</div>
+          <div class="mono" style="color:#6a6454;">MT · 45.16°N 112.99°W</div>
+          <hr style="background:#d8d0bd;">
+          <div class="mono" style="color:#4a463c;">EST 1862 · GOLD<br>PEAK 10,000<br><span style="color:#8c8470;">END 1970 · presumed</span></div>
+        </div>
+      </div>
+      <div class="meta">
+        <div class="mname"><h3>Bone Survey</h3><span class="id">C</span></div>
+        <p class="desc">Inverted. A pale bone field like a contemporary gallery print or architect's drawing — hairline contours, near-black type. Cyberpunk enters only as one severe vermilion signal. Reads timeless because it refuses both dark-mode trend and parchment nostalgia.</p>
+        <div class="sw"><span style="background:#e7e1d2;"></span><span style="background:#b9b09a;"></span><span style="background:#8c8470;"></span><span style="background:#9a3b22;"></span><span style="background:#d8451f;"></span></div>
+        <div class="type"><b>Inter</b> + <b>mono</b> data labels · vermilion signal</div>
+        <div class="pick">Click to choose C</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="foot">These are mood swatches, not the real map yet — think of them as the palette, line weight, marker language, and panel chrome. Pick one as the base (or tell me to blend two, e.g. "B's warm land with C's restraint"), and I'll push a refined single-direction screen next.</p>
+</body>
+</html>

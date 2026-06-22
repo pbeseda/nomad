@@ -20,7 +20,9 @@ Design + plan live in `docs/superpowers/`:
 - Spec: `docs/superpowers/specs/2026-06-21-nomad-sites-atlas-design.md`
 - Plan: `docs/superpowers/plans/2026-06-21-nomad-sites-atlas.md`
 
-Each new entity/experience (Trail, Travellers/contributions, Encyclopedia, atlas Tier 3 filters / Tier 4 connections, data enrichment) is its own design → plan → build slice. Read the spec before extending the model.
+**Future direction & all open threads:** `docs/ROADMAP.md` — read this before starting new work. It connects every thread from the project's origin: the Trail, Travellers/contributions, the Encyclopedia, atlas Tier 3 filters / Tier 4 connections, data enrichment, richer time-layer `site_records`, latent-region reveal, deployment, plus carried-over technical fast-follows. Locked visual mockups are preserved in `docs/design/`.
+
+Each new entity/experience is its own design → plan → build slice. Read the spec and `docs/ROADMAP.md` before extending the model.
 
 ## Stack
 
