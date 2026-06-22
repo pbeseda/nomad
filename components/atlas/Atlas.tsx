@@ -76,6 +76,15 @@ export function Atlas({ sites }: { sites: SiteCurrent[] }) {
     });
 
     return () => { map.remove(); mapRef.current = null; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Keep the GeoJSON source in sync when sites changes without recreating the map.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const src = map.getSource("sites") as maplibregl.GeoJSONSource | undefined;
+    if (src) src.setData(toFeatureCollection(sites));
   }, [sites]);
 
   // Drive selected feature-state from React.
