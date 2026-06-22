@@ -1,0 +1,14 @@
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 6; height: 46px;
+  display: flex; align-items: center; gap: 18px; padding: 0 18px;
+  background: linear-gradient(180deg, rgba(7,10,12,.85), rgba(7,10,12,0));
+  font-family: Inter, system-ui, sans-serif; pointer-events: none; }
+.wordmark { font-weight: 700; letter-spacing: .34em; font-size: 14px; color: #f0e6d2; }
+.wordmark b { color: #f0a83c; }
+.count { font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .12em; color: #a9744a; }
+.coord { font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .12em;
+  color: #7e8682; margin-left: auto; }
+.legend { position: absolute; left: 18px; bottom: 18px; z-index: 6;
+  font: 600 10px/1.85 ui-monospace, Menlo, monospace; letter-spacing: .08em;
+  color: #7e8682; pointer-events: none; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 8px; vertical-align: middle; }
